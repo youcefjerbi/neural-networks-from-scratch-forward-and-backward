@@ -34,8 +34,29 @@ def numerical_gradient(f, x, eps=1e-5):
 
     return gradient
 
-# Step 2 - gradient_check (not yet solved)
-# TODO: implement
+# Step 2 - gradient_check
+import numpy as np
+
+
+def gradient_check(analytic_grad, numeric_grad, tol=1e-5):
+    analytic = np.asarray(analytic_grad, dtype=float)
+    numeric = np.asarray(numeric_grad, dtype=float)
+
+    if analytic.shape != numeric.shape:
+        raise ValueError("Gradients must have the same shape")
+    if not np.isfinite(tol) or tol <= 0:
+        raise ValueError("tol must be finite and positive")
+
+    if analytic.size == 0:
+        return 0.0
+
+    difference = np.abs(analytic - numeric)
+    denominator = np.maximum(
+        tol,
+        np.maximum(np.abs(analytic), np.abs(numeric))
+    )
+
+    return float(np.max(difference / denominator))
 
 # Step 3 - make_dense (not yet solved)
 # TODO: implement
